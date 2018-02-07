@@ -1,0 +1,63 @@
+#include <stdio.h>
+void main()
+{
+    char isim[60];
+    int hsayi[256]={0}; /// Hangi harften kac tane var tutmak icin ASCII dizisi
+    int harf,i;
+    int kelime=0; /// Kac kelime yazilmis akilda tutmak icin
+    int kontrol=0; ///Ust uste bosluk yazilirsa akilda tutmak icin
+    printf("Kelimeyi girin = ");
+    fflush(stdin);
+    gets(isim);
+
+    for(i=0;i<strlen(isim)+1;i++)
+    {
+        harf=isim[i];
+        hsayi[harf]++;
+        if(i==0 && harf!=32) /// 1 Eger ilk karekter bosluk olursa kelime olarak algilamamasi icin
+        {
+            kelime++;
+            printf("\n%d.Kelime= ",kelime);
+        }
+        if(i==strlen(isim)-1 && harf==32) /// 2 Eger son karekter bosluk olursa kelime olarak algilamamasi icin
+            continue;
+        if(harf==32)/// 3 Bosluk olursa kelime artmasi icin
+         {
+             if(harf==32 && kontrol==1)/// 4 Ust uste birden fazla bosluk girilirse her birinde kelime atilmamasi icin
+                continue;
+             kelime++;
+             printf("\n%d.Kelime=",kelime);
+             printf("%c",isim[i]);
+             kontrol=1; /// 5 Bosluk basildigini anlamak icin
+
+        /** UST USTE BOSLUK BASILIRSA ILK BOSLUKTAN SONRA KONTROL 1 OLACAK, ARDINDAN
+         26.SATIRDAKI IF'E GIRECEK VE FOR DONGUSUNUN BASINA DONECEK
+
+         KARAKTER BOSLUK OLMADIGINDA; 43.SATIRDAKI KONTROLU 0'LAYACAK,
+         BIR SONRAKI UST USTE BOSLUK BASMALARDA AYNI ISLEM TEKRARLANACAK **/
+
+         }
+         else
+         {
+             printf("%c",isim[i]);
+             kontrol=0; ///Kelimenin bosluk olmadigini teyit etmek icin
+         }
+    }
+    printf("\n\n\n%10s\t%3s\n","Harf","KacDefa");
+    printf("----------------------------\n");
+    for(i=1;i<256;i++) /// Hangi harften kac adet var yazdirmak icin
+    {
+        if(hsayi[i]==0)
+        {
+            continue; /** Eger sayi hic yazilmamissa yazdirmadan gecmek icin
+            silerseniz tum ASCII tablosundaki karekterlerden kac defa kullanilmis bastan asagi yazar (DENENMEDI) **/
+        }
+        if(i==32) /// KAC TANE BOSLUK OLDUGUNU " " DEGILDE "BOSLUK" OLARAK YAZDIRMA
+        {
+            printf("%10s\t%3d\n","Bosluk",hsayi[i]);
+            continue;
+        }
+        printf("%10c\t%3d\n",i,hsayi[i]);
+    }
+    getch();
+}
